@@ -2,6 +2,7 @@ package tacos;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.model;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -82,6 +83,7 @@ public class DesignTacoControllerTest {
   @Test
   public void testShowDesignForm() throws Exception {
     mockMvc.perform(get("/design"))
+    	.andDo(print())
         .andExpect(status().isOk())
         .andExpect(view().name("design"))
         .andExpect(model().attribute("wrap", ingredients.subList(0, 2)))
@@ -100,6 +102,7 @@ public class DesignTacoControllerTest {
         .content("name=Test+Taco&ingredients=FLTO,GRBF,CHED")
         .contentType(MediaType.APPLICATION_FORM_URLENCODED))
         .andExpect(status().is3xxRedirection())
+        .andDo(print())
         .andExpect(header().stringValues("Location", "/orders/current"));
   }
 
